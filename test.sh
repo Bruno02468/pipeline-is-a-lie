@@ -8,14 +8,15 @@ echo "Validation Results" > $validation_file
 echo "==================" >> $validation_file
 
 # Compile programs with optimization
-gcc -O2 -o sequential sequential.c -lm
-gcc -O2 -o parallel parallel.c -fopenmp -lm -pthread
+gcc -O3 -o sequential sequential.c
+gcc -O3 -o sequential_no_vec sequential_no_vec.c
+gcc -O3 -o parallel parallel.c -fopenmp -pthread
 
 echo "Starting benchmarks..."
 echo "======================="
 
 # Test configurations
-sizes=(100 1000 10000 100000 1000000 10000000)
+sizes=(100 1000 10000 100000 1000000)
 
 for size in "${sizes[@]}"
 do
@@ -42,6 +43,16 @@ do
     echo "$size,Parallel,$runtime" >> $output_file
     echo "Runtime: $runtime seconds"
     echo "Parallel version:" >> $validation_file
+    echo "$output" | grep -A4 "Vector validation:" >> $validation_file
+    echo ""
+
+    # Sequential version
+    echo "Sequential version without A and B vectors:"
+    output=$(./sequential_no_vec $size)
+    runtime=$(echo "$output" | grep -oP '(?<=Time: )[0-9.]+')
+    echo "$size,Sequential-no-vec,$runtime" >> $output_file
+    echo "Runtime: $runtime seconds"
+    echo "Sequential-no-vec version:" >> $validation_file
     echo "$output" | grep -A4 "Vector validation:" >> $validation_file
     echo ""
     

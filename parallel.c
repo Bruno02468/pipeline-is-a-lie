@@ -29,7 +29,7 @@ void processa_vetor_b() {
     
     for (int i = 1; i < tamanho_global; i++) {
         sem_wait(&sem_ab[i]);
-        vetorB[i] = vetorB[i-1] + vetorA[i-2];
+        vetorB[i] = vetorB[i-1] + vetorA[i-1];
         sem_post(&sem_bc[i]);
     }
 }
@@ -40,7 +40,7 @@ void processa_vetor_c() {
     
     for (int i = 1; i < tamanho_global; i++) {
         sem_wait(&sem_bc[i]);
-        vetorC[i] = vetorC[i-1] + vetorB[i-2];
+        vetorC[i] = vetorC[i-1] + vetorB[i-1];
     }
 }
 
@@ -86,33 +86,9 @@ int main(int argc, char* argv[]) {
     printf("Time: %.6f\n", tempo);
     printf("Vector validation:\n");
     
-    printf("A: ");
-    for(int i = 0; i < 5 && i < tamanho_global; i++) {
-        printf("%.2f ", vetorA[i]);
-    }
-    printf("... ");
-    for(int i = tamanho_global-5; i < tamanho_global; i++) {
-        printf("%.2f ", vetorA[i]);
-    }
-    printf("\n");
-    
-    printf("B: ");
-    for(int i = 0; i < 5 && i < tamanho_global; i++) {
-        printf("%.2f ", vetorB[i]);
-    }
-    printf("... ");
-    for(int i = tamanho_global-5; i < tamanho_global; i++) {
-        printf("%.2f ", vetorB[i]);
-    }
-    printf("\n");
-    
-    printf("C: ");
-    for(int i = 0; i < 5 && i < tamanho_global; i++) {
-        printf("%.2f ", vetorC[i]);
-    }
-    printf("... ");
-    for(int i = tamanho_global-5; i < tamanho_global; i++) {
-        printf("%.2f ", vetorC[i]);
+    // print only C vector
+    for (int i = 0; i < tamanho_global; i++) {
+        printf("vetorC[%d]=%.2f; ", i, vetorC[i]);
     }
     printf("\n");
 
