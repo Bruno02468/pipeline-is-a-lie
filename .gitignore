@@ -2,3 +2,4 @@ parallel
 sequential
 validation_results.txt
 benchmark_results.csv
+.vscode
