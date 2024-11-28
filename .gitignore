@@ -1,5 +1,6 @@
 parallel
 sequential
+sequential_no_vec
 validation_results.txt
 benchmark_results.csv
 .vscode
